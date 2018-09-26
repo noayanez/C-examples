@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string query = "SELECT * FROM country limit 10";
+            string connetionString;
+            MySqlConnection cnn;
+            connetionString = "datasource=localhost;port=3306;username=root;password=;database=sakila;SslMode=none";
+            cnn = new MySqlConnection(connetionString);
+            MySqlCommand comando = new MySqlCommand(query, cnn);
+            MySqlDataReader reader;
+            Console.WriteLine("1");
+            try
+            {
+                Console.WriteLine("2");
+                cnn.Open();
+                Console.WriteLine("Connection Lista !");
+                // Execute the query
+                reader = comando.ExecuteReader();
+
+                // All succesfully executed, now do something
+
+                // IMPORTANT : 
+                // If your query returns result, use the following processor :
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        // As our database, the array will contain : ....
+                        // Do something with every received database ROW
+                        Console.WriteLine(reader.GetString(0)+" - "+reader.GetString(1));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No hay resultados");
+                }
+                cnn.Close();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("ERROR : "+ e.Message);
+            }
+            Console.ReadKey();
+        }
+    }
+}
